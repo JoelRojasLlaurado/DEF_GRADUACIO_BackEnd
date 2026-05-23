@@ -6,9 +6,9 @@ const options: Options = {
     definition: {
         openapi: '3.0.0',
         info: {
-            title: 'EA Proyecto',
+            title: 'Graduation Ticket Scan API',
             version: '1.0.0',
-            description: 'Users REST API'
+            description: 'Backend API for ticket validation and scan tracking'
         },
         servers: [
             {

@@ -6,12 +6,12 @@
   "scripts": {
     "build": "tsc",
     "start": "node build/server.js",
-    "postinstall": "tsc",
-    "import_data": "node build/scripts/seedBackend.js"
+    "postinstall": "tsc"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/socket.io": "^3.0.1",
     "bcrypt": "^6.0.0",
     "chalk": "^4.1.2",
     "cookie-parser": "^1.4.7",
@@ -21,6 +21,7 @@
     "joi": "^17.6.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^6.13.9",
+    "socket.io": "^4.8.3",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1"
   },

@@ -5,12 +5,13 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { config } from './config/config';
 import Logging from './library/Logging';
-import UserRoutes from './routes/User';
-import RouteRoutes from './routes/Route';
-import PointRoutes from './routes/Point';
 import authRoutes from './routes/auth';
+import scanRoutes from './routes/Scan';
+import ticketsRoutes from './routes/tickets';
+import statsRoutes from './routes/Stats';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
+import { initializeWebSocket } from './utils/WebSocketManager';
 
 const router = express();
 
@@ -45,7 +46,7 @@ const StartServer = () => {
         next();
     });
 
-    const allowedOrigins = ['http://localhost:4200', 'http://localhost:5173', 'http://localhost:1337'];
+    const allowedOrigins = ['http://localhost:4200', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:1337'];
 
     router.use(
         cors({
@@ -66,9 +67,9 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/auth', authRoutes);
-    router.use('/users', UserRoutes);
-    router.use('/routes', RouteRoutes);
-    router.use('/points', PointRoutes);
+    router.use('/', scanRoutes);
+    router.use('/', ticketsRoutes);
+    router.use('/', statsRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ hello: 'world' }));
@@ -84,5 +85,8 @@ const StartServer = () => {
         });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    const httpServer = http.createServer(router);
+    initializeWebSocket(httpServer);
+
+    httpServer.listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
 };

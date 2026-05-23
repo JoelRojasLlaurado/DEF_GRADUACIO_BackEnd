@@ -1,8 +1,9 @@
-export type UserRole = 'admin' | 'user';
+export type StaffRole = 'admin' | 'moderator' | 'desk';
 
 export interface IJwtPayload {
     id: string;
-    name: string;
     email: string;
-    rol: UserRole;
+    role: StaffRole;
+    first_name: string;
+    last_name: string;
 }

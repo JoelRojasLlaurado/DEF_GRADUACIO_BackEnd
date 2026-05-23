@@ -1,20 +1,8 @@
 import jwt from 'jsonwebtoken';
 import { config } from '../config/config';
-import { IJwtPayload, UserRole } from '../models/JwtPayload';
+import { IJwtPayload } from '../models/JwtPayload';
 
-export const generateAccessToken = (
-    userId: string,
-    name: string,
-    email: string,
-    rol: UserRole
-) => {
-    const payload: IJwtPayload = {
-        id: userId,
-        name,
-        email,
-        rol
-    };
-
+export const generateAccessToken = (payload: IJwtPayload) => {
     return jwt.sign(
         payload,
         config.jwt.accessSecret,
@@ -22,19 +10,7 @@ export const generateAccessToken = (
     );
 };
 
-export const generateRefreshToken = (
-    userId: string,
-    name: string,
-    email: string,
-    rol: UserRole
-) => {
-    const payload: IJwtPayload = {
-        id: userId,
-        name,
-        email,
-        rol
-    };
-
+export const generateRefreshToken = (payload: IJwtPayload) => {
     return jwt.sign(
         payload,
         config.jwt.refreshSecret,
