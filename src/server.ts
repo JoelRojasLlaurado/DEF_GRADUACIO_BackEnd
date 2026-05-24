@@ -8,6 +8,7 @@ import Logging from './library/Logging';
 import authRoutes from './routes/auth';
 import scanRoutes from './routes/Scan';
 import ticketsRoutes from './routes/tickets';
+import adminActionsRoutes from './routes/adminActions';
 import statsRoutes from './routes/Stats';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './swagger';
@@ -67,6 +68,7 @@ const StartServer = () => {
 
     /** Routes */
     router.use('/auth', authRoutes);
+    router.use('/', adminActionsRoutes);
     router.use('/', scanRoutes);
     router.use('/', ticketsRoutes);
     router.use('/', statsRoutes);

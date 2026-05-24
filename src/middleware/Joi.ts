@@ -52,7 +52,8 @@ export const Schemas = {
         }),
         listQuery: Joi.object({
             limit: Joi.number().valid(10, 25, 50, 75, 100).optional(),
-            page: Joi.number().integer().min(1).optional()
+            page: Joi.number().integer().min(1).optional(),
+            staffId: Joi.string().hex().length(24).optional()
         }).optional()
     },
 
@@ -60,6 +61,14 @@ export const Schemas = {
         searchQuery: Joi.object({
             q: Joi.string().trim().min(1).required(),
             limit: Joi.number().integer().min(1).max(10).optional()
+        })
+    },
+
+    AdminActions: {
+        searchQuery: Joi.object({
+            q: Joi.string().trim().min(1).required(),
+            limit: Joi.number().valid(10, 25, 50).optional(),
+            page: Joi.number().integer().min(1).optional()
         })
     }
 };

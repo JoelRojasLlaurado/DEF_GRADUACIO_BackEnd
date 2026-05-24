@@ -58,11 +58,12 @@ export const history = async (req: AuthRequest, res: Response) => {
     try {
         const parsedLimit = Number(req.query.limit);
         const parsedPage = Number(req.query.page);
+        const staffId = typeof req.query.staffId === 'string' ? req.query.staffId : undefined;
 
         const limit = (ALLOWED_LIMITS.has(parsedLimit) ? parsedLimit : 25) as ScanService.ScanHistoryLimit;
         const page = Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
-        const result = await ScanService.getHistory({ limit, page });
+        const result = await ScanService.getHistory({ limit, page, staffId });
         return res.status(200).json(result);
     } catch (error) {
         return handleScanError(error, res);

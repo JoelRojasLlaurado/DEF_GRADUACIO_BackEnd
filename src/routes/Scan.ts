@@ -145,6 +145,13 @@ const router = express.Router();
  *           type: integer
  *           minimum: 1
  *         description: Page number
+ *       - in: query
+ *         name: staffId
+ *         required: false
+ *         schema:
+ *           type: string
+ *           pattern: '^[a-fA-F0-9]{24}$'
+ *         description: Filter scan actions by staff ObjectId
  *     responses:
  *       200:
  *         description: History returned successfully

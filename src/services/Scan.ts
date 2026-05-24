@@ -8,6 +8,7 @@ type ScanHistoryLimit = 10 | 25 | 50 | 75 | 100;
 type ScanHistoryPagination = {
     limit: ScanHistoryLimit;
     page: number;
+    staffId?: string;
 };
 
 type ScanHistoryResult<T> = {
@@ -104,18 +105,19 @@ const exit = async (hash: string, staffId: string) => {
 };
 
 const getHistory = async (pagination: ScanHistoryPagination): Promise<ScanHistoryResult<any>> => {
-    const { limit, page } = pagination;
+    const { limit, page, staffId } = pagination;
     const skip = (page - 1) * limit;
+    const filter = staffId ? { staff_id: new mongoose.Types.ObjectId(staffId) } : {};
 
     const [data, total] = await Promise.all([
-        Scan.find({})
+        Scan.find(filter)
             .populate('ticket_id', 'first_name last_name email ticket_type pmr hash consumed consume_time fac local_number')
             .populate('staff_id', 'email first_name last_name role')
             .sort({ time: -1, _id: -1 })
             .skip(skip)
             .limit(limit)
             .exec(),
-        Scan.countDocuments({})
+        Scan.countDocuments(filter)
     ]);
 
     return {
