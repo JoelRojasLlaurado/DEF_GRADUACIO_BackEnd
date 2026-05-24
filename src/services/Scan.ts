@@ -41,7 +41,7 @@ const registerScan = async (action: ScanAction, hash: string, staffId: string, t
     });
 
     // Populate and broadcast event to admins
-    const populatedScan = await scan.populate('ticket_id', 'first_name last_name email ticket_type pmr hash consumed consume_time fac local_number');
+    const populatedScan = await scan.populate('ticket_id', 'first_name last_name email ticket_type pmr hash consumed consume_time fac local_number status');
     const populatedWithStaff = await populatedScan.populate('staff_id', 'email first_name last_name role');
 
     broadcastScanEvent({
@@ -121,7 +121,7 @@ const getHistory = async (pagination: ScanHistoryPagination): Promise<ScanHistor
 
     const [data, total] = await Promise.all([
         Scan.find(filter)
-            .populate('ticket_id', 'first_name last_name email ticket_type pmr hash consumed consume_time fac local_number')
+            .populate('ticket_id', 'first_name last_name email ticket_type pmr hash consumed consume_time fac local_number status')
             .populate('staff_id', 'email first_name last_name role')
             .sort({ time: -1, _id: -1 })
             .skip(skip)

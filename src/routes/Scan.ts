@@ -43,6 +43,9 @@ const router = express.Router();
  *         local_number:
  *           type: integer
  *           example: 0
+ *         status:
+ *           type: string
+ *           enum: [enabled, disabled]
  *         consumed:
  *           type: boolean
  *           example: true
