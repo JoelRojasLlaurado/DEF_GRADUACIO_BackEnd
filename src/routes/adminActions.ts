@@ -53,6 +53,14 @@ const router = express.Router();
  *             $ref: '#/components/schemas/AdminSearchItem'
  *         total:
  *           type: integer
+ *     TicketEnabledResponse:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *         status:
+ *           type: string
+ *           enum: [enabled, disabled]
  */
 
 /**
@@ -102,5 +110,37 @@ const router = express.Router();
  *         description: Internal server error
  */
 router.get('/search', authenticateToken, authorizeRoles('admin'), ValidateQuery(Schemas.AdminActions.searchQuery), controller.search);
+
+/**
+ * @openapi
+ * /tickets/{id}/change-enabled:
+ *   patch:
+ *     summary: Toggle a ticket enabled status
+ *     description: Allows an admin user to switch a ticket between enabled and disabled.
+ *     tags: [admin-actions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Ticket MongoDB id
+ *     responses:
+ *       200:
+ *         description: Ticket status updated successfully
+ *       400:
+ *         description: Invalid ticket id
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden (requires admin)
+ *       404:
+ *         description: Ticket not found
+ *       500:
+ *         description: Internal server error
+ */
+router.patch('/tickets/:id/change-enabled', authenticateToken, authorizeRoles('admin'), controller.changeEnabled);
 
 export default router;

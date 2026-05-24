@@ -1,6 +1,7 @@
 import Ticket, { ITicketModel } from '../models/Ticket';
 
 type AdminSearchResult = Pick<ITicketModel, '_id' | 'first_name' | 'last_name' | 'email' | 'ticket_type' | 'fac' | 'hash' | 'status' | 'consumed' | 'consume_time' | 'pmr' | 'local_number'>;
+type ChangeEnabledResult = Pick<ITicketModel, '_id' | 'status'>;
 
 const buildSearchConditions = (query: string) => {
     const normalizedQuery = query.trim();
@@ -93,4 +94,17 @@ export const search = async (query: string, options: SearchOptions = {}): Promis
 
     const data = await q.exec();
     return { data: data as AdminSearchResult[], total: data.length, limit };
+};
+
+export const changeEnabled = async (id: string): Promise<ChangeEnabledResult | null> => {
+    const ticket = await Ticket.findById(id).select('_id status').exec();
+
+    if (!ticket) {
+        return null;
+    }
+
+    ticket.status = ticket.status === 'enabled' ? 'disabled' : 'enabled';
+    await ticket.save();
+
+    return ticket.toObject() as ChangeEnabledResult;
 };

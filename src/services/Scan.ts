@@ -64,8 +64,16 @@ const findTicketByHash = async (hash: string) => {
     return ticket;
 };
 
+const assertTicketEnabled = (ticket: { status: string }) => {
+    if (ticket.status === 'disabled') {
+        throw new HttpError(409, 'La entrada esta desactivada y no puede utilizarse');
+    }
+};
+
 const enter = async (hash: string, staffId: string) => {
     const ticket = await findTicketByHash(hash);
+
+    assertTicketEnabled(ticket);
 
     if (ticket.consumed) {
         await registerScan('ALREADY_USED', hash, staffId, ticket._id);
@@ -89,6 +97,8 @@ const verify = async (hash: string, staffId: string) => {
 
 const exit = async (hash: string, staffId: string) => {
     const ticket = await findTicketByHash(hash);
+
+    assertTicketEnabled(ticket);
 
     if (!ticket.consumed) {
         await registerScan('NOT_USED', hash, staffId, ticket._id);
