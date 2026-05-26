@@ -85,7 +85,7 @@ const router = express.Router();
  *         schema:
  *           type: integer
  *           enum: [10, 25, 50]
- *         description: Maximum number of results returned when not paginating (or page size when paginating). Allowed values: 10, 25, 50
+ *         description: "Maximum number of results returned when not paginating (or page size when paginating). Allowed values: 10, 25, 50"
  *       - in: query
  *         name: page
  *         required: false
