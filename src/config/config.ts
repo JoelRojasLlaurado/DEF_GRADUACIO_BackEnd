@@ -2,13 +2,17 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URL = process.env.MONGO_URI || '';
+const cleanEnv = (value: string | undefined, fallback = '') => {
+    return (value || fallback).trim().replace(/^['"]|['"]$/g, '');
+};
+
+const MONGO_URL = cleanEnv(process.env.MONGO_URI);
 const SERVER_PORT = Number(process.env.PORT || process.env.SERVER_PORT || 1337);
 
-const JWT_ACCESS_SECRET = process.env.JWT_ACCESS_SECRET || 'LlaveSecretaDefault';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'LlaveRefreshDefault';
-const JWT_ACCESS_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN || '15m';
-const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+const JWT_ACCESS_SECRET = cleanEnv(process.env.JWT_ACCESS_SECRET, 'LlaveSecretaDefault');
+const JWT_REFRESH_SECRET = cleanEnv(process.env.JWT_REFRESH_SECRET, 'LlaveRefreshDefault');
+const JWT_ACCESS_EXPIRES_IN = cleanEnv(process.env.JWT_ACCESS_EXPIRES_IN, '15m');
+const JWT_REFRESH_EXPIRES_IN = cleanEnv(process.env.JWT_REFRESH_EXPIRES_IN, '7d');
 
 export const config = {
     mongo: {
